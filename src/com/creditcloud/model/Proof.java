@@ -12,7 +12,7 @@ public class Proof implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -1762150136639196690L;
+//	private static final long serialVersionUID = -1762150136639196690L;
 	
 	/**
 	 * 认证ID
@@ -68,4 +68,9 @@ public class Proof implements Serializable {
 	 * 是否是封面
 	 */
 	public boolean cover;
+	
+    /**
+     * 
+     */
+	public Owner owner;
 }

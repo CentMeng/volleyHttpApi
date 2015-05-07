@@ -17,25 +17,79 @@ public class BankAccount implements Serializable {
     /**
      * 账户名
      */
-    public String name;
+    private String name;
 	
     /**
      * 银行类型
      */
-	public String bank;
+    private String bank;
 	
 	/**
 	 * 开户行地址
 	 */
-	public String location;
+	private String location;
 	
 	/**
 	 * 支行名称
 	 */
-	public String branch;
+	private String branch;
 	
 	/**
 	 * 账户卡号
 	 */
-	public String account;
+	private String account;
+	
+	private String bankMobile;
+	
+	
+
+	public String getBankMobile() {
+		return bankMobile;
+	}
+
+	public void setBankMobile(String bankMobile) {
+		this.bankMobile = bankMobile;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getBank() {
+		return bank;
+	}
+
+	public void setBank(String bank) {
+		this.bank = bank;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getBranch() {
+		return branch;
+	}
+
+	public void setBranch(String branch) {
+		this.branch = branch;
+	}
+
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+	
+	
 }

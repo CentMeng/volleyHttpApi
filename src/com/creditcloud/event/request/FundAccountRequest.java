@@ -8,10 +8,10 @@ import com.creditcloud.event.ApiRequest;
  * @author mengxc
  *
  */
-public class FundAccountRequest extends ApiRequest {
+public class FundAccountRequest extends ApiRequest{
 
-	public FundAccountRequest() {
-		super(ApiConstants.API_MY_FUND_ACCOUNT);
+	public FundAccountRequest(String values) {
+		super(String.format(ApiConstants.API_MY_FUND_ACCOUNT,values));
 	}
 	
 }

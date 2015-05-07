@@ -20,33 +20,33 @@ public class Repayment implements Serializable {
 	/**
 	 * 本金
 	 */
-	public double amountPrincipal;
+	private double amountPrincipal;
 
 	/**
 	 * 利息
 	 */
-	public double amountInterest;
+	private double amountInterest;
 
 	/**
 	 * 总金额
 	 */
-	public double amountOutstanding;
+	private double amountOutstanding;
 
 	/**
 	 * 还款时间
 	 */
-	public long dueDate;
+	private String dueDate;
 
-	public Repayment() {
-	}
-
-	public Repayment(BigDecimal amountPrincipal, BigDecimal amountInterest,
-			BigDecimal amountOutstanding, Date dueDate) {
-		this.amountPrincipal = amountPrincipal.doubleValue();
-		this.amountInterest = amountInterest.doubleValue();
-		this.amountOutstanding = amountOutstanding.doubleValue();
-		this.dueDate = dueDate.getTime();
-	}
+//	public Repayment() {
+//	}
+//
+//	public Repayment(BigDecimal amountPrincipal, BigDecimal amountInterest,
+//			BigDecimal amountOutstanding, Date dueDate) {
+//		this.amountPrincipal = amountPrincipal.doubleValue();
+//		this.amountInterest = amountInterest.doubleValue();
+//		this.amountOutstanding = amountOutstanding.doubleValue();
+//		this.dueDate = dueDate.getTime();
+//	}
 
 	/**
 	 * 当期的应还款总额.
@@ -58,4 +58,38 @@ public class Repayment implements Serializable {
 	public double getAmount() {
 		return amountInterest + amountPrincipal;
 	}
+
+	public double getAmountPrincipal() {
+		return amountPrincipal;
+	}
+
+	public void setAmountPrincipal(double amountPrincipal) {
+		this.amountPrincipal = amountPrincipal;
+	}
+
+	public double getAmountInterest() {
+		return amountInterest;
+	}
+
+	public void setAmountInterest(double amountInterest) {
+		this.amountInterest = amountInterest;
+	}
+
+	public double getAmountOutstanding() {
+		return amountOutstanding;
+	}
+
+	public void setAmountOutstanding(double amountOutstanding) {
+		this.amountOutstanding = amountOutstanding;
+	}
+
+	public String getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(String dueDate) {
+		this.dueDate = dueDate;
+	}
+	
+	
 }

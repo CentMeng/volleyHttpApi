@@ -10,8 +10,8 @@ import com.creditcloud.event.ApiRequest;
  */
 public class StatisticsRequest extends ApiRequest {
     
-    public StatisticsRequest() {
-        super(ApiConstants.API_MY_STATISTICS);
+    public StatisticsRequest(String values) {
+        super(String.format(ApiConstants.API_MY_STATISTICS, values));
     }
     
 }

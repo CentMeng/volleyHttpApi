@@ -10,27 +10,77 @@ public class StatisticsInvest {
     /**
      * 已投资的开放投标的标的数
      */
-	public long openStatusInvestNumber;
+	private long openStatusInvestNumber;
 	
 	/**
 	 * 已投资的结算投标的标的数
 	 */
-	public long settledStatusInvestNumber;
+	private long settledStatusInvestNumber;
 	
 	/**
 	 * 已投资的收益金额
 	 */
-	public double investInterestAmount;
+	private double investInterestAmount;
 	
 	/**
 	 * 即使收益率
 	 */
-	public long currentYield;
+	private long currentYield;
 	
 	/**
 	 * 投资冻结金额
 	 */
-	public double investFrozenAmount;
+	private double investFrozenAmount;
 	
-	public StatisticsInvestSub investStatistics;
+	private StatisticsInvestSub investStatistics;
+
+	public long getOpenStatusInvestNumber() {
+		return openStatusInvestNumber;
+	}
+
+	public void setOpenStatusInvestNumber(long openStatusInvestNumber) {
+		this.openStatusInvestNumber = openStatusInvestNumber;
+	}
+
+	public long getSettledStatusInvestNumber() {
+		return settledStatusInvestNumber;
+	}
+
+	public void setSettledStatusInvestNumber(long settledStatusInvestNumber) {
+		this.settledStatusInvestNumber = settledStatusInvestNumber;
+	}
+
+	public double getInvestInterestAmount() {
+		return investInterestAmount;
+	}
+
+	public void setInvestInterestAmount(double investInterestAmount) {
+		this.investInterestAmount = investInterestAmount;
+	}
+
+	public long getCurrentYield() {
+		return currentYield;
+	}
+
+	public void setCurrentYield(long currentYield) {
+		this.currentYield = currentYield;
+	}
+
+	public double getInvestFrozenAmount() {
+		return investFrozenAmount;
+	}
+
+	public void setInvestFrozenAmount(double investFrozenAmount) {
+		this.investFrozenAmount = investFrozenAmount;
+	}
+
+	public StatisticsInvestSub getInvestStatistics() {
+		return investStatistics;
+	}
+
+	public void setInvestStatistics(StatisticsInvestSub investStatistics) {
+		this.investStatistics = investStatistics;
+	}
+	
+	
 }

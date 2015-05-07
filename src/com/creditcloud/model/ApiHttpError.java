@@ -7,7 +7,7 @@ package com.creditcloud.model;
  * 2014-10-4 下午5:46:50 
  * 
  */
-public class ApiHttpError {
+public class ApiHttpError implements HttpError{
 
 //	{"error":"invalid_request","error_description":"invalid loginName or password"}
 	public String error;

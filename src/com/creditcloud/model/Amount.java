@@ -14,16 +14,43 @@ public class Amount implements Serializable {
     /**
      * 本金
      */
-    public double principal;
+    private double principal;
     
     /**
      * 利率
      */
-	public double interest;
+	private double interest;
 	
 	/**
 	 * 总额
 	 */
-	public double totalAmount;
+	private double totalAmount;
+
+	public double getPrincipal() {
+		return principal;
+	}
+
+	public void setPrincipal(double principal) {
+		this.principal = principal;
+	}
+
+	public double getInterest() {
+		return interest;
+	}
+
+	public void setInterest(double interest) {
+		this.interest = interest;
+	}
+
+	public double getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(double totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+	
+	
+	
 	
 }

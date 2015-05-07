@@ -1,16 +1,23 @@
 package com.creditcloud.api;
 
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.content.Context;
+import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.widget.ImageView;
+
+import cache.DataCache;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.GsonRequest;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
+import com.android.volley.toolbox.StringRequest;
 import com.creditcloud.api.cache.BitmapCache;
 import com.creditcloud.utils.NetWorkUtils;
 import com.google.gson.Gson;
@@ -80,53 +87,30 @@ public class VolleyHttpClient {
 	}
 
 	public void get(String url, Class clazz, Response.Listener listener,
-			Response.ErrorListener errorListener) {
+			Response.ErrorListener errorListener,boolean needCache) {
 
 		GsonRequest request = new GsonRequest(Request.Method.GET, url, clazz,
-				null, null, listener, errorListener);
+				null, null, listener, errorListener,needCache);
 
-		HttpService.httpQueue.getCache().invalidate(url, true);
-		if (!NetWorkUtils.detect(httpService.getContext())) {
 
-			if (HttpService.httpQueue.getCache().get(url) != null) {
-				String cacheStr = new String(HttpService.httpQueue.getCache()
-						.get(url).data);
-
-				if (cacheStr != null) {
-
-					try {
-
-						listener.onResponse(gson.fromJson(cacheStr, clazz));
-
-					} catch (JsonSyntaxException e) {
-						e.printStackTrace();
-					}
-
-					return;
-				}
-
-			}
-
-			return;
-
+		if(!needCache || !useCache(clazz,url,listener)){
+			httpService.addToRequestQueue(request);
 		}
-
-		httpService.addToRequestQueue(request);
 
 	}
 
 	public static void getStatic(String url, Class clazz,
 			Response.Listener listener, Response.ErrorListener errorListener,
-			String[] keys, String[] values) {
+			String[] keys, String[] values,boolean needCache) {
 
 		getWithHeaderStatic(url, clazz, null, listener, errorListener, keys,
-				values);
+				values,needCache);
 
 	}
 
 	public static void getWithHeaderStatic(String url, Class clazz,
 			Map<String, String> header, Response.Listener listener,
-			Response.ErrorListener errorListener, String[] keys, String[] values) {
+			Response.ErrorListener errorListener, String[] keys, String[] values,boolean needCache) {
 
 		Map<String, String> params = new HashMap<String, String>();
 		for (int i = 0; i < keys.length; i++) {
@@ -134,7 +118,7 @@ public class VolleyHttpClient {
 		}
 
 		GsonRequest request = new GsonRequest(Request.Method.GET, url, clazz,
-				header, params, listener, errorListener);
+				header, params, listener, errorListener,needCache);
 
 		HttpService.httpQueue.getCache().invalidate(url, true);
 		if (!NetWorkUtils.detect(httpService.getContext())) {
@@ -177,7 +161,7 @@ public class VolleyHttpClient {
 	 */
 	public void getWithHeader(String url, Class clazz,
 			Map<String, String> header, Response.Listener listener,
-			Response.ErrorListener errorListener, String[] keys, String[] values) {
+			Response.ErrorListener errorListener, String[] keys, String[] values,boolean needCache) {
 
 		Map<String, String> params = new HashMap<String, String>();
 		for (int i = 0; i < keys.length; i++) {
@@ -185,34 +169,10 @@ public class VolleyHttpClient {
 		}
 
 		GsonRequest request = new GsonRequest(Request.Method.GET, url, clazz,
-				header, params, listener, errorListener);
-
-		HttpService.httpQueue.getCache().invalidate(url, true);
-		if (!NetWorkUtils.detect(httpService.getContext())) {
-
-			if (HttpService.httpQueue.getCache().get(url) != null) {
-				String cacheStr = new String(HttpService.httpQueue.getCache()
-						.get(url).data);
-
-				if (cacheStr != null) {
-
-					try {
-
-						listener.onResponse(gson.fromJson(cacheStr, clazz));
-
-					} catch (JsonSyntaxException e) {
-						e.printStackTrace();
-					}
-
-					return;
-				}
-
-			}
-
-			return;
-
+				header, params, listener, errorListener,needCache);
+		if(!needCache || !useCache(clazz,url,listener)){
+			httpService.addToRequestQueue(request);
 		}
-		httpService.addToRequestQueue(request);
 	}
 
 	/**
@@ -226,7 +186,7 @@ public class VolleyHttpClient {
 	 */
 	public void getWithParams(String url, Class clazz,
 			Response.Listener listener, Response.ErrorListener errorListener,
-			String[] keys, String[] values) {
+			String[] keys, String[] values,boolean needCache) {
 
 		Map<String, String> params = new HashMap<String, String>();
 		for (int i = 0; i < keys.length; i++) {
@@ -234,72 +194,29 @@ public class VolleyHttpClient {
 		}
 
 		GsonRequest request = new GsonRequest(Request.Method.GET, url, clazz,
-				null, params, listener, errorListener);
-
-		HttpService.httpQueue.getCache().invalidate(url, true);
-		if (!NetWorkUtils.detect(httpService.getContext())) {
-
-			if (HttpService.httpQueue.getCache().get(url) != null) {
-				String cacheStr = new String(HttpService.httpQueue.getCache()
-						.get(url).data);
-
-				if (cacheStr != null) {
-
-					try {
-
-						listener.onResponse(gson.fromJson(cacheStr, clazz));
-
-					} catch (JsonSyntaxException e) {
-						e.printStackTrace();
-					}
-
-					return;
-				}
-
-			}
-
-			return;
-
+				null, params, listener, errorListener,needCache);
+		if(!needCache || !useCache(clazz,url,listener)){
+			httpService.addToRequestQueue(request);
 		}
-		httpService.addToRequestQueue(request);
 	}
 
 	public void getTokenOauth(String url, Class clazz,
-			Response.Listener listener, Response.ErrorListener errorListener) {
+			Response.Listener listener, Response.ErrorListener errorListener,boolean needCache) {
 
 		Map<String, String> header = new HashMap<String, String>();
 
-		String accessToken = "";
+		String accessToken = accessToken = DataCache.getDataCache().queryCache(
+				"access_token");
+		if (!TextUtils.isEmpty(accessToken)) {
+			Log.e("access_token", accessToken);
+		}
 		header.put("Authorization", "Bearer" + " " + accessToken);
 		GsonRequest request = new GsonRequest(Request.Method.GET, url, clazz,
-				header, null, listener, errorListener);
+				header, null, listener, errorListener,needCache);
 
-		HttpService.httpQueue.getCache().invalidate(url, true);
-		if (!NetWorkUtils.detect(httpService.getContext())) {
-
-			if (HttpService.httpQueue.getCache().get(url) != null) {
-				String cacheStr = new String(HttpService.httpQueue.getCache()
-						.get(url).data);
-
-				if (cacheStr != null) {
-
-					try {
-
-						listener.onResponse(gson.fromJson(cacheStr, clazz));
-
-					} catch (JsonSyntaxException e) {
-						e.printStackTrace();
-					}
-
-					return;
-				}
-
-			}
-
-			return;
-
+		if(!needCache || !useCache(clazz,url,listener)){
+			httpService.addToRequestQueue(request);
 		}
-		httpService.addToRequestQueue(request);
 	}
 
 	/**
@@ -310,9 +227,9 @@ public class VolleyHttpClient {
 	 * @param errorListener
 	 */
 	public void post(String url, Class clazz, Response.Listener listener,
-			Response.ErrorListener errorListener) {
+			Response.ErrorListener errorListener,boolean needCache) {
 
-		postWithHeader(url, clazz, null, listener, errorListener);
+		postWithHeader(url, clazz, null, listener, errorListener,needCache);
 
 	}
 
@@ -325,68 +242,63 @@ public class VolleyHttpClient {
 	 * @param errorListener
 	 */
 	public void postWithParams(String url, Class clazz,
-			Map<String, String> params, Response.Listener listener,
-			Response.ErrorListener errorListener) {
+			Map<String, Object> params, Response.Listener listener,
+			Response.ErrorListener errorListener,boolean needCache) {
 
 		GsonRequest request = new GsonRequest(Request.Method.POST, url, clazz,
-				null, params, listener, errorListener);
-
-		httpService.addToRequestQueue(request);
+				null, params, listener, errorListener,needCache);
+		if(!needCache || !useCache(clazz,url,listener)){
+			httpService.addToRequestQueue(request);
+		}
 	}
 
 	public void postWithHeader(String url, Class clazz,
 			Map<String, String> header, Response.Listener listener,
-			Response.ErrorListener errorListener) {
+			Response.ErrorListener errorListener,boolean needCache) {
 
 		GsonRequest request = new GsonRequest(Request.Method.POST, url, clazz,
-				header, null, listener, errorListener);
-
-		httpService.addToRequestQueue(request);
+				header, null, listener, errorListener,needCache);
+		if(!needCache || !useCache(clazz,url,listener)){
+			httpService.addToRequestQueue(request);
+		}
 	}
 
 	public void postOAuth(String url, Class clazz, Response.Listener listener,
-			Response.ErrorListener errorListener) {
+			Response.ErrorListener errorListener,boolean needCache) {
 
 		Map<String, String> header = new HashMap<String, String>();
 
 		// replace your token
 		String accessToken = "";
 		header.put("Authorization", "Bearer" + " " + accessToken);
-		postWithHeader(url, clazz, header, listener, errorListener);
+		postWithHeader(url, clazz, header, listener, errorListener,needCache);
 
 	}
 
 	public void postOAuthWithParams(String url, Class clazz,
-			Map<String, String> params, Response.Listener listener,
-			Response.ErrorListener errorListener) {
-
+			Map<String, Object> params, Response.Listener listener,
+			Response.ErrorListener errorListener,boolean needCache) {
 		Map<String, String> header = new HashMap<String, String>();
-		header.put(
-				"Authorization",
-				"Basic"
-						+ " "
-						+ Base64.encodeToString(
-								(ApiSettings.CLIENT_ID + ":" + ApiSettings.CLIENT_SECRET)
-										.getBytes(), Base64.NO_WRAP));
-
-		GsonRequest request = new GsonRequest(Request.Method.POST, url, clazz,
-				header, params, listener, errorListener);
-
-		httpService.addToRequestQueue(request);
-
-	}
-
-	public void postOAuthWithTokenParams(String url, Class clazz,
-			Map<String, String> params, Response.Listener listener,
-			Response.ErrorListener errorListener) {
-
-		Map<String, String> header = new HashMap<String, String>();
-		String accessToken = "";
+		String accessToken = DataCache.getDataCache()
+				.queryCache("access_token");
+		System.out.println("access_token");
+		if (!TextUtils.isEmpty(accessToken)) {
+			Log.e("access_token", accessToken);
+		}
 		header.put("Authorization", "Bearer" + " " + accessToken);
-		GsonRequest request = new GsonRequest(Request.Method.POST, url, clazz,
-				header, params, listener, errorListener);
+		// header.put(
+		// "Authorization",
+		// "Basic"
+		// + " "
+		// + Base64.encodeToString(
+		// (ApiSettings.CLIENT_ID + ":" + ApiSettings.CLIENT_SECRET)
+		// .getBytes(), Base64.NO_WRAP));
 
-		httpService.addToRequestQueue(request);
+		GsonRequest request = new GsonRequest(Request.Method.POST, url, clazz,
+				header, params, listener, errorListener,needCache);
+		if(!needCache || !useCache(clazz,url,listener)){
+			httpService.addToRequestQueue(request);
+		}
 
 	}
 
@@ -403,5 +315,86 @@ public class VolleyHttpClient {
 			imageLoader.get(url, listener);
 		}
 	}
+
+	/**
+	 * StringRequest
+	 */
+	public void getTokenOauthByStringRequest(String url,
+			Response.Listener listener, Response.ErrorListener errorListener,boolean needCache) {
+
+		Map<String, String> header = new HashMap<String, String>();
+
+		String accessToken = accessToken = DataCache.getDataCache().queryCache(
+				"access_token");
+		if (!TextUtils.isEmpty(accessToken)) {
+			Log.e("access_token", accessToken);
+		}
+		header.put("Authorization", "Bearer" + " " + accessToken);
+		StringRequest request = new StringRequest(Request.Method.GET, url,
+				header, null, listener, errorListener,needCache);
+
+		if(!needCache || !useCache(null,url,listener)){
+			httpService.addToRequestQueue(request);
+		}
+	}
+
+	public void getByStringRequest(String url, Response.Listener listener,
+			Response.ErrorListener errorListener,boolean needCache) {
+		StringRequest request = new StringRequest(Request.Method.GET, url,
+				null, null, listener, errorListener,needCache);
+		if(!needCache || !useCache(null,url,listener)){
+			httpService.addToRequestQueue(request);
+		}
+		
+	}
+
+	/**
+	 * 断网情况使用缓存处理
+	 * @param context
+	 * @param url
+	 * @return
+	 */
+	private boolean useCache(Class clazz,String url,Response.Listener listener) {
+		HttpService.httpQueue.getCache().invalidate(url, true);
+		if (!NetWorkUtils.detect(httpService.getContext())) {
+				String cacheStr =DataCache.getDataCache().queryCache(url);
+				if (cacheStr != null) {
+					try {
+						if(clazz !=null){
+							listener.onResponse(gson.fromJson(cacheStr, clazz));
+						}else{
+							listener.onResponse(cacheStr);
+						}
+						return true;
+
+					} catch (JsonSyntaxException e) {
+						e.printStackTrace();
+						return false;
+					}
+				}
+				return false;
+		}else{
+			return false;
+		}
+	}
+	
+	//volley框架缓存
+//	if (HttpService.httpQueue.getCache().get(url) != null) {
+//		String cacheStr = new String(HttpService.httpQueue.getCache()
+//				.get(url).data);
+//
+//		if (cacheStr != null) {
+//
+//			try {
+//				listener.onResponse(cacheStr);
+//
+//			} catch (JsonSyntaxException e) {
+//				e.printStackTrace();
+//			}
+//
+//			return;
+//		}
+//
+//	}
 
 }

@@ -14,6 +14,11 @@ public class ErrorInfo {
 	private static Map<String,String> msg = new HashMap<String,String>();
 
 	static{
+		msg.put("MOBILE_EXISTS", "该手机号已被注册");
+		msg.put("MOBILE_INVALID", "请输入正确的手机号");
+		msg.put("LOGINNAME_INVALID","用户名必须由数字和字母组成");
+		msg.put("MOBILE_CAPTCHA_INVALID", "验证码错误");
+		msg.put("MOBILE_SMS_CAPTCHA_ALREADY_SEND", "验证码已发送");
 		msg.put("USER_NOT_SIGN_NO_PWD_AGREEMENT", "用户未签订无密投资协议");
 		msg.put("USER_AMOUNT_INSUFFICIENT_AND_INVEST_RETURN", "可用余额不足,投资已返还");
 		msg.put("USER_AMOUNT_INSUFFICIENT_AND_PREPARE_CONTACT", "可用金额不足,请联系客服");

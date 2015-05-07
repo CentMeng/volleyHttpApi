@@ -4,16 +4,35 @@ public class ApiConstants {
 
 	public final static int PAYMENT_VENDOR_UMP = 1;
 	public final static int PAYMENT_VENDOR_CHINAPNR = 2;
-
+	
+	/**
+	 * 登陆
+	 */
 	public final static String API_LOGIN = "/token";
 
-	public final static String API_REGISTER = "/api_register";
+	/**
+	 * 注册
+	 */
+	public final static String API_REGISTER = "/register";
+	
+	/**
+	 * 图片格式验证码
+	 */
+	public final static String API_IMAGECODE ="/register/captcha";
 
 	/**
 	 * 发送手机验证码
 	 */
 	public final static String API_SMS_CAPTCHA = "/register/smsCaptcha";
+	
+  /**
+   * 发送手机验证码
+   */
+	public final static String API_SMS_CAPTCHA1 ="/smsCaptcha/%1$s";
 
+	/**
+	 * 首页轮播图
+	 */
 	public final static String API_BANNERS = "/cms/mobileBanners";
 
 	public final static String API_LOANS_SUMMARY = "/loans/summary";
@@ -24,8 +43,16 @@ public class ApiConstants {
 
 	public final static String API_LOAN_FILTER = "/loans/filter";
 
+	/**
+	 * 借款列表
+	 */
 	public final static String API_LOAN_PAGE = "/loans/getLoanWithPage";
-
+	
+	/**
+	 * 单个借款列表
+	 */
+	public final static String API_SINGLE_LOAN ="/loan";
+	
 	public final static String API_LOANS_PURPOSE = "/loans/purpose/%1$s";
 
 	public final static String API_LOAN = "/loan/%1$s";
@@ -91,7 +118,10 @@ public class ApiConstants {
 	 */
 	public final static String API_MY_INVESTS_PURPOSE = "/user/MYSELF/invests/purpose/%1$s";
 
-	public final static String API_MY_FUND_ACCOUNT = "/user/MYSELF/fundaccounts";
+	/**
+	 * 检测银行卡
+	 */
+	public final static String API_MY_FUND_ACCOUNT = "/user/%1$s/fundaccounts";
 
 	public final static String API_MY_FUND = "/user/MYSELF/userfund";
 
@@ -111,7 +141,7 @@ public class ApiConstants {
 	/**
 	 * 我的账户相关资金统计信息
 	 */
-	public final static String API_MY_STATISTICS = "/user/MYSELF/statistics";
+	public final static String API_MY_STATISTICS = "/user/%1$s/statistics";
 
 	public final static String API_UMP = "http://pay.soopay.net/spay/pay/payservice.do";
 
@@ -197,4 +227,30 @@ public class ApiConstants {
 	 * 第三方资金托管：联动环境
 	 */
 	public final static String URL_THIRD_PARTY_UMP = "http://pay.soopay.net/spay/pay/payservice.do";
+	
+	
+	//新加
+	/**
+	 * 我的账户
+	 */
+	public final static String API_USER_FUND ="/user/%1$s/userfund";
+	
+	/**
+	 * 银行名称
+	 */
+	public final static String API_BANKNAME ="/chinapay/banks";
+	
+	/**
+	 * 城市列表
+	 */
+	public final static String API_CITIES = "/chinapay/cities";
+	
+	/**
+	 * 重置密码
+	 */
+	public final static String API_UPDATEPWD = "/auth/reset_password?captcha_token=%1$s"+"&captcha_answer=%2$s";
+	/**
+	 * 检测身份证号
+	 */
+	public final static String API_CHECKCERNO = "/users/check/id_number";
 }

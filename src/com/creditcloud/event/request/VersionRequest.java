@@ -16,6 +16,6 @@ public class VersionRequest extends ApiRequest {
 	}
 
 	public VersionRequest(String api) {
-	    super(api);
+	    super(api,true);
 	}
 }

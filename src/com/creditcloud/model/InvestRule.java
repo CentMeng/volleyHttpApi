@@ -28,4 +28,30 @@ public class InvestRule implements Serializable {
 	 * 递增金额
 	 */
 	public int stepAmount;
+
+	public int getMinAmount() {
+		return minAmount;
+	}
+
+	public void setMinAmount(int minAmount) {
+		this.minAmount = minAmount;
+	}
+
+	public int getMaxAmount() {
+		return maxAmount;
+	}
+
+	public void setMaxAmount(int maxAmount) {
+		this.maxAmount = maxAmount;
+	}
+
+	public int getStepAmount() {
+		return stepAmount;
+	}
+
+	public void setStepAmount(int stepAmount) {
+		this.stepAmount = stepAmount;
+	}
+	
+	
 }
