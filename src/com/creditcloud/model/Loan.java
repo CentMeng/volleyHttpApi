@@ -120,25 +120,25 @@ public class Loan extends ApiResponse implements Serializable {
 	/**
 	 * 待发布标的剩余时间（自行计算）
 	 */
-	@Deprecated
+
 	public long timeLoss = -1;
 
-	@Deprecated
+
 	public long tickLoss = 0;
 
-	@Deprecated
+
 	public double balance;
 	
-	@Deprecated
+
 	public long leftBidTime = 0;
 	
-	@Deprecated
+
 	public long timeLeft = 0;
 	
-	@Deprecated
+
 	public long countDownTime = 0;
 	
-	@Deprecated
+
 	public long deviation = 0;
 	
 	/**
@@ -447,6 +447,8 @@ public class Loan extends ApiResponse implements Serializable {
 	public void setContractCode(String contractCode) {
 		this.contractCode = contractCode;
 	}
+	
+	
 //
 //	public static long getSerialversionuid() {
 //		return serialVersionUID;

@@ -47,5 +47,71 @@ public class StatisticsLoan {
 	 * 现有贷款总额：已安排、开放投标、已满标、已结算
 	 */
 	public long currentLoanAmount;
+
+	public long getPendingLoanNum() {
+		return pendingLoanNum;
+	}
+
+	public void setPendingLoanNum(long pendingLoanNum) {
+		this.pendingLoanNum = pendingLoanNum;
+	}
+
+	public long getTotalLoanNum() {
+		return totalLoanNum;
+	}
+
+	public void setTotalLoanNum(long totalLoanNum) {
+		this.totalLoanNum = totalLoanNum;
+	}
+
+	public long getPendingLoanRequestAmount() {
+		return pendingLoanRequestAmount;
+	}
+
+	public void setPendingLoanRequestAmount(long pendingLoanRequestAmount) {
+		this.pendingLoanRequestAmount = pendingLoanRequestAmount;
+	}
+
+	public long getOverdueLoanNum() {
+		return overdueLoanNum;
+	}
+
+	public void setOverdueLoanNum(long overdueLoanNum) {
+		this.overdueLoanNum = overdueLoanNum;
+	}
+
+	public long getClearedLoanNum() {
+		return clearedLoanNum;
+	}
+
+	public void setClearedLoanNum(long clearedLoanNum) {
+		this.clearedLoanNum = clearedLoanNum;
+	}
+
+	public long getSettledLoanNum() {
+		return settledLoanNum;
+	}
+
+	public void setSettledLoanNum(long settledLoanNum) {
+		this.settledLoanNum = settledLoanNum;
+	}
+
+	public long getTotalLoanAmount() {
+		return totalLoanAmount;
+	}
+
+	public void setTotalLoanAmount(long totalLoanAmount) {
+		this.totalLoanAmount = totalLoanAmount;
+	}
+
+	public long getCurrentLoanAmount() {
+		return currentLoanAmount;
+	}
+
+	public void setCurrentLoanAmount(long currentLoanAmount) {
+		this.currentLoanAmount = currentLoanAmount;
+	}
+	
+	
 	
 }
