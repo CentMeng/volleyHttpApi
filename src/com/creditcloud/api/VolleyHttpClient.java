@@ -347,6 +347,23 @@ public class VolleyHttpClient {
 		}
 		
 	}
+	
+	public void getByStringOauthRequest(String url, Response.Listener listener,
+			Response.ErrorListener errorListener,boolean needCache) {
+		Map<String, String> header = new HashMap<String, String>();
+		String accessToken = accessToken = DataCache.getDataCache().queryCache(
+				"access_token");
+		if (!TextUtils.isEmpty(accessToken)) {
+			Log.e("access_token", accessToken);
+		}
+		header.put("Authorization", "Bearer" + " " + accessToken);
+		StringRequest request = new StringRequest(Request.Method.GET, url,
+				header, null, listener, errorListener,needCache);
+		if(!needCache || !useCache(null,url,listener)){
+			httpService.addToRequestQueue(request);
+		}
+		
+	}
 
 	/**
 	 * 断网情况使用缓存处理

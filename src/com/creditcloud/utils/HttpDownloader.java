@@ -9,6 +9,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;  
 import java.net.MalformedURLException;  
 import java.net.URL;  
+
+import android.text.TextUtils;
+import android.util.Log;
+import cache.DataCache;
   
 
 
@@ -35,6 +39,7 @@ public class HttpDownloader {
 		try {
 			// 使用getInputStreamFromUrl得到一个InputStream
 			input = this.getInputStreamFromUrl(urlStr);
+			
 			// 使用IO流读取数据
 			buffer = new BufferedReader(new InputStreamReader(input));
 			while ((line = buffer.readLine()) != null) {
@@ -122,18 +127,16 @@ public class HttpDownloader {
 				// 使用getInputStreamFromUrl得到一个InputStream
 				int bufferSize = 1024;
 				byte buf[] = new byte[bufferSize];
+				System.out.println("----------"+urlStr);
 				input = this.getInputStreamFromUrl(urlStr);
+				System.out.println("----------"+input);
 				fileUtils.creatSDDir(path);  
 				resultFile = fileUtils.creatSDFile(path + fileName);  
 				fos = new FileOutputStream(resultFile);
-				do{
-					int numread = input.read(buf);
-					if(numread <=0){
-						break;
-					}
-					fos.write(buf, 0, numread);
-					
-				}while(!cancel);
+				int len = -1;
+				while ((len = input.read(buf)) != -1) {
+					fos.write(buf, 0, len);
+				}
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -170,11 +173,24 @@ public class HttpDownloader {
 	public InputStream getInputStreamFromUrl(String urlStr)
 			throws MalformedURLException, IOException {
 		// 通过传入的urlStr字符串对象创建一个URL对象
+		System.out.println("----------"+urlStr);
 		url = new URL(urlStr);
 		// 通过创建的URL对象创建一个Http连接
 		HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
+		String accessToken = accessToken = DataCache.getDataCache().queryCache(
+				"access_token");
+		if (!TextUtils.isEmpty(accessToken)) {
+			Log.e("access_token", accessToken);
+		}
+//		   connection.setRequestProperty("Authorization", "Basic " + authStringEnc);
+//		    System.out.println("Base64 encoded auth string: " + authStringEnc);
+		urlConn.setRequestProperty("User-Agent", "MSIE 7.0");
+		urlConn.setRequestProperty("Authorization", "Bearer" + " " + accessToken);
+		urlConn.setConnectTimeout(5000);
 		// 通过Http连接得到一个输入流
+		System.out.println("--------"+urlConn.getResponseMessage());
 		InputStream input = urlConn.getInputStream();
+
 		return input;
 	}
 	
